@@ -10,13 +10,13 @@
 
 ## 1. Introducere
 
-PantryChef este o aplicație web care îți ține evidența ingredientelor din cămară și îți propune rețete posibile generate cu AI pe baza a ceea ce ai în casă. Utilizatorul își creează cont prin GitHub OAuth, adaugă ingrediente cu cantități și unități de măsură, apoi cere generarea de sugestii de rețete (titlu, descriere, ingrediente, pași, timp estimat, dificultate). Rețetele primite pot fi salvate în propria colecție și marcate ca favorite.
+PantryChef este o aplicație web care îți ține evidența ingredientelor din cămară și îți propune rețete generate cu AI pe baza a ce ai în casă. Utilizatorul se autentifică cu GitHub, adaugă ingrediente cu cantități și unități, apoi cere generarea de sugestii de rețete pe care le poate salva și marca drept favorite.
 
 Aplicația folosește **două servicii cloud externe**, expuse aplicației printr-un **API REST** propriu:
 
 | Serviciu cloud | Rol |
 | --- | --- |
-| **MongoDB Atlas** | Stocare persistentă pentru utilizatori, ingrediente cămară și rețete salvate |
+| **MongoDB Atlas** | Stocare persistentă pentru utilizatori, ingrediente și rețete |
 | **Google Gemini API** | Generare rețete pe baza ingredientelor (LLM cu structured JSON output) |
 
 Stack tehnologic: Next.js 16 (App Router) + React 19 + Tailwind CSS v4, Mongoose pentru MongoDB, NextAuth v4 cu GitHub OAuth, `@google/generative-ai` pentru Gemini.
@@ -28,11 +28,7 @@ Persoanele care gătesc des acasă întâmpină recurent două probleme:
 1. **Risipă alimentară** — ingrediente uitate în cămară expiră înainte de a fi folosite.
 2. **Blocaj decizional** — „ce gătesc azi?" când ai în casă o combinație ciudată de produse.
 
-Rețetele clasice presupun o listă de cumpărături predefinită. PantryChef inversează problema: pornește de la inventarul real al utilizatorului și generează 3 sugestii adaptate. Asta:
-
-- reduce risipa, încurajând consumul ingredientelor existente,
-- elimină blocajul decizional prin sugestii instantanee,
-- păstrează rețetele preferate într-un istoric reutilizabil (favorite).
+Rețetele clasice presupun o listă de cumpărături predefinită. PantryChef inversează problema: pornește de la inventarul real al utilizatorului și generează 3 sugestii adaptate. Asta reduce risipa, elimină blocajul decizional prin sugestii instantanee și păstrează rețetele preferate într-un istoric reutilizabil.
 
 ## 3. Descriere API
 
@@ -248,31 +244,6 @@ Response `200`:
 { "id": "65f8c200...", "favorite": true }
 ```
 
-### Diagramă flux principală (generare rețetă)
-
-```
-Utilizator                     Next.js App                MongoDB Atlas        Google Gemini
-    │                               │                          │                    │
-    │ click „Generează rețete"      │                          │                    │
-    ├──────────────────────────────►│                          │                    │
-    │                               │ verifică sesiune (JWT)   │                    │
-    │                               │ citește cămara user-ului │                    │
-    │                               ├─────────────────────────►│                    │
-    │                               │◄─────────────────────────┤                    │
-    │                               │ trimite prompt + schema  │                    │
-    │                               ├─────────────────────────────────────────────►│
-    │                               │              răspuns JSON structurat (3 rețete)│
-    │                               │◄─────────────────────────────────────────────┤
-    │ 3 drafts afișate              │                          │                    │
-    │◄──────────────────────────────┤                          │                    │
-    │ click „Salvează" pe un draft  │                          │                    │
-    ├──────────────────────────────►│                          │                    │
-    │                               │ persistă rețetă          │                    │
-    │                               ├─────────────────────────►│                    │
-    │ confirmare                    │                          │                    │
-    │◄──────────────────────────────┤                          │                    │
-```
-
 ## 5. Capturi ecran aplicație
 
 _(de adăugat după deploy)_
@@ -284,77 +255,10 @@ _(de adăugat după deploy)_
 
 ## 6. Referințe
 
-- [Next.js Documentation](https://nextjs.org/docs) (App Router, Route Handlers, Server Actions)
-- [NextAuth.js v4](https://next-auth.js.org/) — autentificare cu GitHub OAuth + JWT
-- [Mongoose](https://mongoosejs.com/) — ODM pentru MongoDB
-- [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) — DBaaS
-- [Google Gemini API](https://ai.google.dev/gemini-api/docs) — `@google/generative-ai` SDK + structured output
-- [Tailwind CSS v4](https://tailwindcss.com/) — utility-first CSS
-- [Lucide Icons](https://lucide.dev/) — set de iconițe
-- [Vercel Platform](https://vercel.com/) — deploy
-
----
-
-## Setup local
-
-```bash
-git clone <repo-url>
-cd pantrychef
-npm install
-cp .env.example .env.local
-# completează variabilele (vezi .env.example)
-npm run dev
-```
-
-App-ul rulează la `http://localhost:3000`.
-
-### Cerințe pentru `.env.local`
-
-| Variabilă | De unde |
-| --- | --- |
-| `MONGODB_URI` | MongoDB Atlas → Connect → Drivers |
-| `GEMINI_API_KEY` | [aistudio.google.com](https://aistudio.google.com/) → Get API key |
-| `GEMINI_MODEL` | Optional, default `gemini-2.5-flash` |
-| `NEXTAUTH_SECRET` | `openssl rand -base64 32` |
-| `NEXTAUTH_URL` | `http://localhost:3000` în dev, URL public în prod |
-| `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` | GitHub → Settings → Developer settings → OAuth Apps |
-
-În GitHub OAuth App, **Authorization callback URL** trebuie să fie `${NEXTAUTH_URL}/api/auth/callback/github`.
-
-## Deploy pe Vercel
-
-1. Push pe GitHub repository.
-2. [vercel.com/new](https://vercel.com/new) → import repo-ul.
-3. Adaugă toate variabilele de mediu din `.env.example` în Vercel → Settings → Environment Variables.
-4. Setează `NEXTAUTH_URL` la URL-ul de producție (ex. `https://pantrychef.vercel.app`).
-5. Update GitHub OAuth App: adaugă `https://<production>/api/auth/callback/github` la Authorization callback URLs.
-6. Deploy. Build-ul rulează `next build` automat.
-
-## Structură proiect
-
-```
-app/
-  api/
-    auth/[...nextauth]/route.js   NextAuth handler
-    pantry/route.js                GET, POST
-    pantry/[id]/route.js           PATCH, DELETE
-    recipes/route.js               GET, POST
-    recipes/[id]/route.js          GET, PATCH, DELETE
-    recipes/generate/route.js      POST
-  camara/                          UI cămară (server actions + client view)
-  retete/                          UI rețete (lista + detaliu)
-  layout.js, page.js               Layout root + landing
-components/
-  Navbar.js, Providers.js, SignInPrompt.js
-lib/
-  mongoose.js                      Conexiune Mongoose cached
-  authOptions.js, auth.js          NextAuth + helpers
-  gemini.js                        Wrapper Gemini cu structured output
-  api.js                           Helper withUser pentru route handlers
-  errors.js                        ValidationError, NotFoundError
-  services/
-    pantry.js                      Logică cămară (folosită de actions + REST)
-    recipes.js                     Logică rețete
-models/
-  User.js, PantryItem.js, Recipe.js
-```
+- [Next.js Documentation](https://nextjs.org/docs)
+- [NextAuth.js v4](https://next-auth.js.org/)
+- [Mongoose](https://mongoosejs.com/)
+- [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+- [Google Gemini API](https://ai.google.dev/gemini-api/docs)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Vercel](https://vercel.com/)
