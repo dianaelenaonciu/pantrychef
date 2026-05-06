@@ -4,7 +4,7 @@
 **Grupa:** 1147
 
 **Link video prezentare:** _(de completat — YouTube, max 3 min, public nelistat)_
-**Link publicare:** _(de completat — ex. `https://pantrychef.vercel.app`)_
+**Link publicare:** https://pantrychef-diana.vercel.app
 
 ---
 
