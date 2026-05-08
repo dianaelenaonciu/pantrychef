@@ -249,9 +249,16 @@ Response `200`:
 _(de adăugat după deploy)_
 
 - `/` — landing page
+<img width="1701" height="814" alt="Screenshot 2026-05-08 at 12 50 10" src="https://github.com/user-attachments/assets/18d287e5-7588-4bb8-bc92-3dfd013dd5bc" />
+
 - `/camara` — gestionare ingrediente
+<img width="1701" height="844" alt="Screenshot 2026-05-08 at 12 53 04" src="https://github.com/user-attachments/assets/6d095cf7-dcd4-408c-b398-e2680dd9e496" />
+
 - `/retete` — listă rețete + drafts generate
+<img width="1701" height="844" alt="Screenshot 2026-05-08 at 12 53 18" src="https://github.com/user-attachments/assets/18b3af5e-3280-4e87-8c89-b59a50dc0e18" />
+
 - `/retete/{id}` — detaliu rețetă cu pași și buton favorite
+<img width="1701" height="951" alt="Screenshot 2026-05-08 at 12 54 18" src="https://github.com/user-attachments/assets/b04c58bf-ea42-40c9-b6b5-1b027cb0b5c8" />
 
 ## 6. Referințe
 
