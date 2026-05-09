@@ -10,7 +10,7 @@
 
 ## 1. Introducere
 
-PantryChef este o aplicație web care îți ține evidența ingredientelor din cămară și îți propune rețete generate cu AI pe baza a ce ai în casă. Utilizatorul se autentifică cu GitHub, adaugă ingrediente cu cantități și unități, apoi cere generarea de sugestii de rețete pe care le poate salva și marca drept favorite.
+PantryChef este o aplicație web care îți ține evidența ingredientelor din cămară și îți propune rețete generate cu AI pe baza a ceea ce ai în casă. Utilizatorul se autentifică cu GitHub, adaugă ingrediente cu cantități și unități de măsură, apoi cere generarea de sugestii de rețete pe care le poate salva și marca drept favorite.
 
 Aplicația folosește **două servicii cloud externe**, expuse aplicației printr-un **API REST** propriu:
 
