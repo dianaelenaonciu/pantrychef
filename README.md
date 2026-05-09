@@ -166,7 +166,7 @@ Response: `204 No Content` (fără body).
 
 #### `POST /api/recipes/generate`
 
-Request: fără body — folosește ingredientele din cămara utilizatorului.
+Request: fără body - folosește ingredientele din cămara utilizatorului.
 
 Response `200`:
 
@@ -245,8 +245,6 @@ Response `200`:
 ```
 
 ## 5. Capturi ecran aplicație
-
-_(de adăugat după deploy)_
 
 - `/` — landing page
 <img width="1701" height="814" alt="Screenshot 2026-05-08 at 12 50 10" src="https://github.com/user-attachments/assets/18d287e5-7588-4bb8-bc92-3dfd013dd5bc" />
