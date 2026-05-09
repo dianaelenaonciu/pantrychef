@@ -11,7 +11,7 @@ export default function Home() {
               Asistent culinar AI
             </p>
             <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight leading-[1.1] mb-6">
-              Gătește din ce ai deja în cămară.
+              Gătește cu ce ai deja în cămară.
             </h1>
             <p className="text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed mb-8">
               Adaugă ingredientele pe care le ai în casă și PantryChef îți
