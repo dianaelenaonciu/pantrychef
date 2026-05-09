@@ -3,7 +3,7 @@
 **Nume Prenume:** ONCIU DIANA-ELENA
 **Grupa:** 1147
 
-**Link video prezentare:** _(de completat — YouTube, max 3 min, public nelistat)_
+**Link video prezentare:** https://youtu.be/6T8_slP9XBE
 **Link publicare:** https://pantrychef-diana.vercel.app
 
 ---
